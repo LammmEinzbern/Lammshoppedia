@@ -16,7 +16,6 @@ const Header = () => {
       <nav className="fixed z-20 w-full bg-white dark:bg-gray-700 backdrop-blur navbar shadow-md shadow-gray-600/5 peer-checked:navbar-active md:relative md:bg-transparent dark:shadow-none">
         <div className="xl:container px-6 md:px-12 w-full">
           <div className="w-full flex flex-wrap items-center justify-between gap-6 md:py-3 md:gap-0">
-            {/* Logo Section */}
             <div className="w-full flex justify-between lg:w-auto">
               <Link
                 to="/"
@@ -28,7 +27,6 @@ const Header = () => {
                 </span>
               </Link>
 
-              {/* Hamburger Menu for Mobile */}
               <label
                 htmlFor="hbr"
                 className="peer-checked:hamburger block relative z-20 p-6 -mr-6 cursor-pointer lg:hidden ml-auto"
@@ -44,7 +42,6 @@ const Header = () => {
               </label>
             </div>
 
-            {/* Navigation Menu */}
             <div className="navmenu hidden w-full flex-wrap justify-end items-center space-y-8 p-6 lg:space-y-0 lg:p-0 lg:m-0 lg:flex md:flex-nowrap lg:bg-transparent lg:w-7/12 dark:shadow-none dark:border-gray-700 lg:border-0">
               <div className="text-black dark:text-gray-300 lg:pr-4">
                 <ul className="space-y-6 tracking-wide font-medium text-base lg:text-sm lg:flex lg:space-y-0">

@@ -74,14 +74,14 @@ const ProductsPage = () => {
   return (
     <>
       <Header />
-      <main className="m-4 flex flex-col lg:flex-row gap-4">
+      <main className="m-4 flex flex-col lg:flex-row gap-4 h-full">
         <Sidebar
           setShortBy={setShortBy}
           setKategori={setKategori}
           setShortByClien={setShortByClien}
         />
 
-        <div className="w-full lg:w-4/5 p-6">
+        <div className="w-full lg:w-4/5 ">
           <div className="mb-4">
             <input
               type="text"

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
-const Sidebar = ({ setShortBy, setKategori, setShortByClien }) => {
+const Sidebar = ({
+  setShortBy,
+  setKategori,
+  setShortByClien,
+  isHeaderOpen,
+}) => {
   const [selectedFilter, setSelectedFilter] = useState("");
   const [selectedKategori, setSelectedKategori] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -12,11 +17,11 @@ const Sidebar = ({ setShortBy, setKategori, setShortByClien }) => {
   };
 
   const handleResetFilter = () => {
-    setSelectedFilter(""); // Reset harga filter
-    setShortBy(""); // Reset filter berdasarkan harga atau nama
-    setShortByClien(""); // Reset di client juga
-    setSelectedKategori([]); // Reset kategori
-    setKategori([]); // Reset kategori di state parent
+    setSelectedFilter("");
+    setShortBy("");
+    setShortByClien("");
+    setSelectedKategori([]);
+    setKategori([]);
   };
 
   const handleKategori = (kategori) => {
@@ -30,19 +35,33 @@ const Sidebar = ({ setShortBy, setKategori, setShortByClien }) => {
 
   return (
     <>
-      <button
-        className="btn lg:hidden block mb-4 mt-8 dark:text-gray-100 dark:bg-gray-700"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {isOpen ? "Tutup Filter" : "Tampilkan Filter"}
-      </button>
+      {/* Tombol Sidebar (HP Mode) */}
+      {!isHeaderOpen && ( // Sembunyikan tombol jika header sedang terbuka
+        <button
+          className={`btn lg:hidden block mb-4 mt-32 dark:text-gray-100 dark:bg-gray-700 fixed top-4 ${
+            isOpen ? "left-[calc(100%-56px)]" : "left-4"
+          } z-40 transition-all duration-300`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? "Tutup" : "Filter"}
+        </button>
+      )}
 
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
       <aside
-        className={`${
-          isOpen ? "block" : "hidden"
-        } lg:block w-full lg:w-1/5 p-4 bg-gray-50 dark:bg-gray-800 shadow-lg rounded-lg lg:static absolute z-50 top-16 left-0`}
+        className={`fixed top-0 ${
+          isOpen ? "left-0" : "-left-full"
+        } lg:static lg:block w-4/5 lg:w-1/5 h-full bg-gray-50 dark:bg-gray-800 shadow-lg rounded-lg z-50 transition-transform duration-300`}
       >
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center p-4">
           <h2 className="text-2xl mb-3 dark:text-gray-100">Filter Produk</h2>
 
           <label className="flex items-center gap-2 my-2 dark:text-gray-100">
