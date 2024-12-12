@@ -60,7 +60,7 @@ export class Hero extends Component {
           </div>
           <div className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0">
             <img
-              src="./public/selfcheckout-amico.svg"
+              src="./selfcheckout-amico.svg"
               alt="Shopping Illustration"
               className="w-full max-w-[400px] md:max-w-[500px]"
             />

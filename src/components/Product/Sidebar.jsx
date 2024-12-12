@@ -12,9 +12,11 @@ const Sidebar = ({ setShortBy, setKategori, setShortByClien }) => {
   };
 
   const handleResetFilter = () => {
-    setSelectedFilter("");
-    setShortBy("");
-    setShortBy("");
+    setSelectedFilter(""); // Reset harga filter
+    setShortBy(""); // Reset filter berdasarkan harga atau nama
+    setShortByClien(""); // Reset di client juga
+    setSelectedKategori([]); // Reset kategori
+    setKategori([]); // Reset kategori di state parent
   };
 
   const handleKategori = (kategori) => {
