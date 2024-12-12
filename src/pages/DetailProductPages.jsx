@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../utils/SupaNiga";
 
@@ -33,6 +33,19 @@ const DetailProductPages = () => {
 
   return (
     <div className="container mx-auto my-10 p-8 bg-white dark:bg-gray-800">
+      <Link to={"/product"}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="50"
+          height="50"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="m6.523 12.5l3.735 3.735q.146.146.153.344q.006.198-.153.363q-.166.166-.357.169q-.191.002-.357-.163l-4.382-4.383q-.243-.242-.243-.565q0-.323.243-.565l4.382-4.383q.146-.146.347-.153q.201-.007.367.159q.16.165.162.354q.003.188-.162.353L6.523 11.5h12.38q.214 0 .358.143q.143.144.143.357t-.143.357q-.144.143-.357.143H6.524Z"
+          />
+        </svg>
+      </Link>
       <h2 className="text-4xl font-extrabold text-center text-gray-800 dark:text-gray-100 mb-8">
         {product.nama_barang}
       </h2>
