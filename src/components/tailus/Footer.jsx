@@ -7,7 +7,7 @@ const Footer = () => {
         <div class="md:px-12 lg:px-28">
           <div class="container m-auto space-y-6 text-white dark:text-gray-300">
             <img
-              src="./public/selfcheckout-amico.svg"
+              src="./selfcheckout-amico.svg"
               alt="logo tailus"
               class="m-auto w-40"
             />
