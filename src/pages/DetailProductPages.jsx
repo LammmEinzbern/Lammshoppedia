@@ -20,13 +20,20 @@ const DetailProductPages = () => {
     enabled: !!id,
   });
 
-  if (isLoading) return <h2 className="text-center text-xl">Loading...</h2>;
+  if (isLoading)
+    return (
+      <h2 className="text-center text-xl dark:text-gray-200">Loading...</h2>
+    );
   if (error || !product)
-    return <h2 className="text-center text-xl">Produk tidak ditemukan.</h2>;
+    return (
+      <h2 className="text-center text-xl dark:text-gray-200">
+        Produk tidak ditemukan.
+      </h2>
+    );
 
   return (
-    <div className="container mx-auto my-10 p-8 bg-white ">
-      <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-8">
+    <div className="container mx-auto my-10 p-8 bg-white dark:bg-gray-800">
+      <h2 className="text-4xl font-extrabold text-center text-gray-800 dark:text-gray-100 mb-8">
         {product.nama_barang}
       </h2>
 
@@ -40,19 +47,19 @@ const DetailProductPages = () => {
         </div>
 
         <div className="lg:w-1/2 flex flex-col justify-center">
-          <p className="text-2xl text-gray-700 mb-4">
+          <p className="text-2xl text-gray-700 dark:text-gray-300 mb-4">
             <strong>Jenis:</strong> {product.jenis_barang}
           </p>
-          <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
             <strong>Deskripsi:</strong> {product.deskripsi}
           </p>
-          <p className="text-3xl font-semibold text-red-500 mb-6">
+          <p className="text-3xl font-semibold text-red-500 dark:text-red-400 mb-6">
             <strong>Harga:</strong> Rp {product.harga.toLocaleString("id-ID")}
           </p>
-          <p className="text-xl text-gray-700 mb-4">
+          <p className="text-xl text-gray-700 dark:text-gray-300 mb-4">
             <strong>Stok Tersedia:</strong> {product.stok} unit
           </p>
-          <p className="text-sm text-gray-500 mb-8">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
             <strong>Ditambahkan pada:</strong>{" "}
             {new Date(product.created_at).toLocaleDateString("id-ID", {
               day: "2-digit",
@@ -62,10 +69,10 @@ const DetailProductPages = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors">
+            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors">
               Beli Sekarang
             </button>
-            <button className="px-6 py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors">
+            <button className="px-6 py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition-colors">
               Tambah ke Keranjang
             </button>
           </div>
