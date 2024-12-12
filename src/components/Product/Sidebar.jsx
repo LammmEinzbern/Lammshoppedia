@@ -35,10 +35,9 @@ const Sidebar = ({
 
   return (
     <>
-      {/* Tombol Sidebar (HP Mode) */}
-      {!isHeaderOpen && ( // Sembunyikan tombol jika header sedang terbuka
+      {!isHeaderOpen && (
         <button
-          className={`btn lg:hidden block mb-4 mt-32 dark:text-gray-100 dark:bg-gray-700 fixed top-4 ${
+          className={`btn lg:hidden block mb-4 mt-52 dark:text-gray-100 dark:bg-gray-700 fixed top-4 ${
             isOpen ? "left-[calc(100%-56px)]" : "left-4"
           } z-40 transition-all duration-300`}
           onClick={() => setIsOpen(!isOpen)}
@@ -47,7 +46,6 @@ const Sidebar = ({
         </button>
       )}
 
-      {/* Overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30"
@@ -55,7 +53,6 @@ const Sidebar = ({
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`fixed top-0 ${
           isOpen ? "left-0" : "-left-full"

@@ -81,8 +81,8 @@ const ProductsPage = () => {
           setShortByClien={setShortByClien}
         />
 
-        <div className="w-full lg:w-4/5 ">
-          <div className="mb-4">
+        <div className="w-full lg:w-4/5">
+          <div className="mb-4 mt-24 md:mt-0">
             <input
               type="text"
               placeholder="Cari produk..."
