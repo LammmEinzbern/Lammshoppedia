@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/tailus/Header";
 import Footer from "../components/tailus/Footer";
+import FloatingButton from "../components/FloatingButton";
 
 const ContactPages = () => {
   const [formData, setFormData] = useState({
@@ -189,7 +190,17 @@ const ContactPages = () => {
             </form>
           </div>
         </div>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1663022.0210172555!2d138.4502452987295!3d35.50205559395694!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x605d1b87f02e57e7%3A0x2e01618b22571b89!2sTokyo%2C%20Jepang!5e0!3m2!1sid!2sid!4v1736127334829!5m2!1sid!2sid"
+          width="1200"
+          height="450"
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="mt-10 "
+        ></iframe>
       </div>
+      <FloatingButton />
       <Footer />
     </main>
   );

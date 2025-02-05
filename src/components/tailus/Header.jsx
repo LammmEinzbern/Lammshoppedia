@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Theme from "../daisyui/Theme";
+import { useAuth } from "../../utils/store/useAuth";
+import { useCart } from "../../utils/store/useCart"; // Import useCart untuk mengakses state keranjang
 
 const Header = () => {
   const location = useLocation();
+  const { user } = useAuth();
+  const { cart } = useCart();
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    if (cart && cart.length > 0) {
+      // Hitung hanya jumlah produk unik (bukan total semua barang)
+      const uniqueProducts = new Set(cart.map((item) => item.id_produk)).size;
+      setCartCount(uniqueProducts);
+    } else {
+      setCartCount(0);
+    }
+  }, [cart]);
   return (
     <header>
       <input
@@ -88,16 +103,57 @@ const Header = () => {
                 </ul>
               </div>
 
-              <div className="flex flex-col sm:flex-row lg:space-y-0 lg:items-center lg:gap-3">
-                <Link
-                  to="/login"
-                  className="relative flex h-9 ml-5 items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full before:bg-yellow-300 dark:before:bg-primaryLight before:transition before:duration-300 hover:before:scale-105 active:before:scale-95"
+              <Link to="/cart" className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-gray-800 dark:text-gray-300 hover:text-gray-500 transition-all duration-300"
                 >
-                  <span className="relative text-sm font-semibold text-white dark:text-white">
-                    Login
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5 shadow-md animate-bounce">
+                    {cartCount}
                   </span>
-                </Link>
-                <Theme />
+                )}
+              </Link>
+
+              <div className="flex flex-col sm:flex-row lg:space-y-0 lg:items-center lg:gap-3">
+                {user ? (
+                  <>
+                    <Link
+                      to="/profile"
+                      className="relative flex h-9 ml-5 items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full before:bg-yellow-300 dark:before:bg-primaryLight before:transition before:duration-300 hover:before:scale-105 active:before:scale-95"
+                    >
+                      <span className="relative text-sm font-semibold text-white dark:text-white">
+                        Profile
+                      </span>
+                    </Link>
+                    <Theme />
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="relative flex h-9 ml-5 items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full before:bg-yellow-300 dark:before:bg-primaryLight before:transition before:duration-300 hover:before:scale-105 active:before:scale-95"
+                    >
+                      <span className="relative text-sm font-semibold text-white dark:text-white">
+                        Login
+                      </span>
+                    </Link>
+                    <Theme />
+                  </>
+                )}
               </div>
             </div>
           </div>

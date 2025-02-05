@@ -6,6 +6,7 @@ import WhyChooseUs from "../components/Home/WhyChooseUs";
 import SupportPayment from "../components/Home/SupportPayment";
 import CTA from "../components/Home/CTA";
 import Footer from "../components/tailus/Footer";
+import FloatingButton from "../components/FloatingButton";
 export default function HomePages() {
   return (
     <>
@@ -16,6 +17,7 @@ export default function HomePages() {
         <WhyChooseUs />
         <SupportPayment />
         <CTA />
+        <FloatingButton />
       </div>
       <Footer />
     </>

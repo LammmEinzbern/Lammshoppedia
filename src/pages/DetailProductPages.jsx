@@ -2,22 +2,31 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../utils/SupaNiga";
+import FloatingButton from "../components/FloatingButton";
 
 const DetailProductPages = () => {
   const { id } = useParams();
-  console.log("Product ID dari URL:", id);
+  const productId = parseInt(id, 10);
+
+  console.log("Product ID dari URL:", productId);
 
   const {
     data: product,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["product", id],
+    queryKey: ["product", productId],
     queryFn: async () => {
-      const res = await supabase.from("barang").select().eq("id", id).single();
-      return res.data;
+      if (!productId) return null;
+      const { data, error } = await supabase
+        .from("barang")
+        .select("*")
+        .eq("id", productId)
+        .single();
+      if (error) throw new Error(error.message);
+      return data;
     },
-    enabled: !!id,
+    enabled: !!productId,
   });
 
   if (isLoading)
@@ -46,6 +55,7 @@ const DetailProductPages = () => {
           />
         </svg>
       </Link>
+
       <h2 className="text-4xl font-extrabold text-center text-gray-800 dark:text-gray-100 mb-8">
         {product.nama_barang}
       </h2>
@@ -91,6 +101,7 @@ const DetailProductPages = () => {
           </div>
         </div>
       </div>
+      <FloatingButton />
     </div>
   );
 };

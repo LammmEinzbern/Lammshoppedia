@@ -7,30 +7,29 @@ const Sidebar = ({
   isHeaderOpen,
 }) => {
   const [selectedFilter, setSelectedFilter] = useState("");
-  const [selectedKategori, setSelectedKategori] = useState([]);
+  const [selectedKategori, setSelectedKategori] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
+  const setParams = (filter = "", kategori = "") => {
+    setShortBy(filter); // Update filter harga
+    setShortByClien(filter); // Update filter harga untuk client
+    setKategori(kategori ? [kategori] : []); // Update kategori yang dipilih
+  };
+
   const handleFilterChange = (filter) => {
-    setSelectedFilter(filter);
-    setShortBy(filter);
-    setShortByClien(filter);
+    setSelectedFilter(filter); // Update filter harga
+    setParams(filter, selectedKategori); // Panggil setParams dengan filter harga dan kategori
+  };
+
+  const handleKategoriChange = (kategori) => {
+    setSelectedKategori(kategori); // Update kategori yang dipilih
+    setParams(selectedFilter, kategori); // Panggil setParams dengan filter harga dan kategori
   };
 
   const handleResetFilter = () => {
     setSelectedFilter("");
-    setShortBy("");
-    setShortByClien("");
-    setSelectedKategori([]);
-    setKategori([]);
-  };
-
-  const handleKategori = (kategori) => {
-    const updateKategori = selectedKategori.includes(kategori)
-      ? selectedKategori.filter((kat) => kat !== kategori)
-      : [...selectedKategori, kategori];
-
-    setSelectedKategori(updateKategori);
-    setKategori(updateKategori);
+    setSelectedKategori("");
+    setParams("", ""); // Reset filter harga dan kategori
   };
 
   return (
@@ -90,19 +89,21 @@ const Sidebar = ({
 
           <label className="flex items-center gap-2 my-2 dark:text-gray-100">
             <input
-              type="checkbox"
-              className="checkbox checkbox-warning"
-              checked={selectedKategori.includes("makanan")}
-              onChange={() => handleKategori("makanan")}
+              type="radio"
+              name="radio-kategori"
+              className="radio radio-warning"
+              checked={selectedKategori === "makanan"}
+              onChange={() => handleKategoriChange("makanan")}
             />
             Makanan
           </label>
           <label className="flex items-center gap-2 my-2 dark:text-gray-100">
             <input
-              type="checkbox"
-              className="checkbox checkbox-warning"
-              checked={selectedKategori.includes("minuman")}
-              onChange={() => handleKategori("minuman")}
+              type="radio"
+              name="radio-kategori"
+              className="radio radio-warning"
+              checked={selectedKategori === "minuman"}
+              onChange={() => handleKategoriChange("minuman")}
             />
             Minuman
           </label>

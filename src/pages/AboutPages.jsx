@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/tailus/Header";
 import Footer from "../components/tailus/Footer";
+import FloatingButton from "../components/FloatingButton";
 
 const AboutPages = () => {
   return (
@@ -73,6 +74,7 @@ const AboutPages = () => {
           </p>
         </div>
       </div>
+      <FloatingButton />
       <Footer />
     </div>
   );
