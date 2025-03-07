@@ -3,13 +3,17 @@ import Header from "../tailus/Header";
 import { useCart } from "../../utils/store/useCart";
 import Footer from "../tailus/Footer";
 import { supabase } from "../../utils/SupaNiga";
+import { useAuth } from "../../utils/store/useAuth";
+import { Helmet } from "react-helmet-async";
 
 const Cart = () => {
-  const { fetchcart, cart } = useCart();
-
+  const { fetchCart, cart, handlePayment } = useCart();
+  const { user } = useAuth();
   useEffect(() => {
-    fetchcart();
-  }, [fetchcart]);
+    if (user?.id) {
+      fetchCart(user.id);
+    }
+  }, [user]);
 
   const handleDecreaseQuantity = async (item) => {
     if (item.jumlah > 1) {
@@ -21,7 +25,7 @@ const Cart = () => {
       if (error) {
         alert("❌ Gagal mengurangi jumlah item!");
       } else {
-        fetchcart();
+        fetchCart(user.id);
       }
     } else {
       const { error } = await supabase.from("cart").delete().eq("id", item.id);
@@ -30,13 +34,18 @@ const Cart = () => {
         alert("❌ Gagal menghapus item!");
       } else {
         alert("✅ Item berhasil dihapus!");
-        fetchcart();
+        fetchCart(user.id); // ✅ Panggil fetchCart dengan user.id setelah hapus
       }
     }
   };
 
   return (
     <>
+      <Helmet>
+        <title>{`Cart`}</title>
+        <meta name="description" content="haloha minna!" />
+        <meta name="keyword" content="toko murah, toko bagus" />
+      </Helmet>
       <Header />
       <div className="flex flex-col items-center my-16 px-6">
         <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-10">
@@ -107,7 +116,9 @@ const Cart = () => {
                 })}
             </p>
             <button
-              onClick={() => (window.location.href = "/checkout")}
+              onClick={() => {
+                handlePayment();
+              }}
               className="w-full py-3 mt-4 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-all duration-300 shadow-lg"
             >
               🛍️ Lanjut ke Pembayaran

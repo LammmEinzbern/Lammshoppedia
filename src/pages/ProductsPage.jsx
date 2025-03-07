@@ -7,6 +7,7 @@ import { supabase } from "../utils/SupaNiga";
 import FloatingButton from "../components/FloatingButton";
 import { useSearchParams } from "react-router-dom";
 import AllProduct from "../components/Product/AllProduct";
+import { Helmet } from "react-helmet-async";
 
 const ProductsPage = () => {
   const [shortby, setShortBy] = useState();
@@ -64,7 +65,13 @@ const ProductsPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`Lis Produg - ${product?.length}`}</title>
+        <meta name="description" content="haloha minna!" />
+        <meta name="keyword" content="toko murah, toko bagus" />
+      </Helmet>
       <Header />
+
       <main className="m-4 flex flex-col lg:flex-row gap-4 h-full">
         <Sidebar
           setShortBy={setShortBy}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../utils/store/useAuth";
 import Header from "../components/tailus/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/SupaNiga";
+import { Helmet } from "react-helmet-async";
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -31,7 +32,7 @@ const Profile = () => {
           setEmail(data.email || "");
           setNoTelepon(data.no_telepon || "");
           setAlamat(data.alamat || "");
-          setAvatarUrl(data.avatar_url || "https://via.placeholder.com/150");
+          setAvatarUrl(data.avatar_url || "");
         }
       }
     };
@@ -93,14 +94,34 @@ const Profile = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    alert("Berhasil logout!");
-    navigate("/");
+  const handleLogout = async () => {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data.session) {
+      console.error("Session not found, kemungkinan sudah expired.");
+      alert("Sesi sudah tidak valid, silakan login ulang.");
+      navigate("/login");
+      return;
+    }
+
+    const { error: logoutError } = await supabase.auth.signOut();
+    if (logoutError) {
+      console.error("Logout gagal:", logoutError.message);
+      alert("❌ Gagal logout!");
+    } else {
+      alert("✅ Berhasil logout!");
+      navigate("/");
+      window.location.reload();
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-tl from-blue-900 via-gray-900 to-black text-white">
+      <Helmet>
+        <title>{`Profile`}</title>
+        <meta name="description" content="haloha minna!" />
+        <meta name="keyword" content="your profile" />
+      </Helmet>
       <Header />
 
       <div className="flex flex-col items-center py-12 px-6">
@@ -172,6 +193,10 @@ const Profile = () => {
               }`}
             >
               {loading ? "Menyimpan..." : "Simpan Perubahan"}
+            </button>
+
+            <button className="w-full py-3 bg-orange-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-orange-600 transition-all duration-300">
+              <Link to="/history-payment"> History Payment</Link>
             </button>
 
             <button

@@ -11,6 +11,8 @@ export const useAuth = create((set, get) => ({
 
   register: async (full_name, email, password) => {
     try {
+      set({ loading: true });
+
       const { data: signUpData, error: signUpError } =
         await supabase.auth.signUp({
           email,
@@ -18,14 +20,14 @@ export const useAuth = create((set, get) => ({
         });
 
       if (signUpError) {
-        console.error("Terjadi kesalahan saat sign up:", signUpError.message);
+        console.error("❌ Error SignUp:", signUpError.message);
         set({ loading: false });
         return;
       }
 
       const userId = signUpData?.user?.id;
       if (!userId) {
-        console.error("User ID tidak ditemukan setelah sign up.");
+        console.error("❌ User ID tidak ditemukan setelah sign up.");
         set({ loading: false });
         return;
       }
@@ -35,10 +37,7 @@ export const useAuth = create((set, get) => ({
         .upsert([{ id: userId, full_name, email }]);
 
       if (upsertError) {
-        console.error(
-          "Terjadi kesalahan saat menyimpan profil:",
-          upsertError.message
-        );
+        console.error("❌ Error menyimpan profil:", upsertError.message);
         set({ loading: false });
         return;
       }
@@ -51,91 +50,134 @@ export const useAuth = create((set, get) => ({
         loading: false,
       });
 
-      console.log("Pendaftaran berhasil.");
+      console.log("✅ Pendaftaran berhasil.");
     } catch (error) {
-      console.error("Unexpected error during registration:", error);
+      console.error("❌ Error Register:", error.message);
       set({ loading: false });
     }
   },
 
   login: async (email, password) => {
-    set({ loading: true });
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      set({ loading: true });
 
-    set({ loading: false });
-    if (error) {
-      console.log("gagal login");
-      return Promise.reject(error.message);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      set({ loading: false });
+
+      if (error) {
+        console.error("❌ Gagal login:", error.message);
+        return Promise.reject(error.message);
+      }
+
+      set({
+        user: data.user,
+        auth: true,
+      });
+
+      console.log("✅ Berhasil login");
+      return Promise.resolve(data.user);
+    } catch (error) {
+      console.error("❌ Error Login:", error.message);
+      set({ loading: false });
     }
-
-    set({
-      user: data.user,
-      auth: true,
-    });
-    console.log("berhasil login");
-    return Promise.resolve(data.user);
   },
 
   logout: async () => {
-    const { error } = await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
 
-    if (error) {
-      console.log(error.message);
-      return;
+      if (error) {
+        console.error("❌ Gagal logout:", error.message);
+        return;
+      }
+
+      set({
+        user: null,
+        auth: false,
+        full_name: "",
+        email: "",
+        role: "",
+        loading: false,
+      });
+
+      console.log("✅ Berhasil logout");
+    } catch (error) {
+      console.error("❌ Error Logout:", error.message);
     }
-
-    set({
-      user: null,
-      auth: false,
-    });
   },
+
   fetchUser: async () => {
-    set({ loading: true });
-    const { data } = await supabase.auth.getUser();
-    const { user: currentuser } = data;
+    try {
+      set({ loading: true });
 
-    if (currentuser) {
-      set({ user: currentuser, auth: true });
-      await get().fetchUserdata(currentuser.id);
-    } else {
-      set({ loading: false });
-    }
+      const { data, error } = await supabase.auth.getUser();
+      const currentUser = data?.user;
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, Session) => {
+      if (error) {
+        console.error("❌ Gagal mengambil user:", error.message);
+        set({ loading: false });
+        return;
+      }
+
+      if (currentUser) {
+        set({ user: currentUser, auth: true });
+        await get().fetchUserdata(currentUser.id);
+      } else {
+        set({ loading: false });
+      }
+
+      // ✅ Perbaikan `onAuthStateChange`
+      const unsubscribe = supabase.auth.onAuthStateChange((event, session) => {
         if (event === "SIGNED_IN") {
-          set({ user: Session.user, auth: true });
+          set({ user: session.user, auth: true });
         } else if (event === "SIGNED_OUT") {
           set({ user: null, auth: false });
         }
-      }
-    );
+      });
 
-    return () => authListener.subscription.unsubscribe();
+      return () => unsubscribe.data?.unsubscribe?.();
+    } catch (error) {
+      console.error("❌ Error Fetch User:", error.message);
+      set({ loading: false });
+    }
   },
 
   fetchUserdata: async (userId) => {
     try {
-      const { data: userData } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId);
+      if (!userId) {
+        console.error("❌ User ID tidak tersedia untuk fetchUserdata");
+        return;
+      }
 
-      if (userData && userData.length > 0) {
+      const { data: userData, error } = await supabase
+        .from("profiles")
+        .select("full_name, email")
+        .eq("id", userId)
+        .single();
+
+      if (error) {
+        console.error("❌ Gagal mengambil data profil:", error.message);
+        set({ loading: false });
+        return;
+      }
+
+      if (userData) {
         set({
-          full_name: userData[0].full_name,
-          email: userData[0].email,
+          full_name: userData.full_name,
+          email: userData.email,
           loading: false,
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error("❌ Error Fetch UserData:", error.message);
       set({ loading: false });
     }
   },
+
   loading: () => {
     set({ loading: true });
   },

@@ -2,10 +2,16 @@ import React from "react";
 import Header from "../components/tailus/Header";
 import Footer from "../components/tailus/Footer";
 import FloatingButton from "../components/FloatingButton";
+import { Helmet } from "react-helmet-async";
 
 const AboutPages = () => {
   return (
     <div className="dark:bg-gray-700 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+      <Helmet>
+        <title>{`About us`}</title>
+        <meta name="description" content="haloha minna!" />
+        <meta name="keyword" content="your profile" />
+      </Helmet>
       <Header />
       <div className="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl text-center">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/tailus/Header";
 import Footer from "../components/tailus/Footer";
 import FloatingButton from "../components/FloatingButton";
+import { Helmet } from "react-helmet-async";
 
 const ContactPages = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,11 @@ const ContactPages = () => {
 
   return (
     <main className="min-h-screen bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 text-gray-800 dark:text-gray-200">
+      <Helmet>
+        <title>{`Contact`}</title>
+        <meta name="description" content="haloha minna!" />
+        <meta name="keyword" content="your profile" />
+      </Helmet>
       <Header />
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <h1 className="text-4xl font-extrabold text-center mb-6 text-blue-600 dark:text-yellow-300">

@@ -6,33 +6,41 @@ import FloatingButton from "../components/FloatingButton";
 
 const DetailProductPages = () => {
   const { id } = useParams();
-  const productId = parseInt(id, 10);
+  console.log("useParams():", useParams());
+  console.log("Product ID dari URL:", id);
 
-  console.log("Product ID dari URL:", productId);
+  // Periksa apakah ID valid (bukan undefined atau kosong)
+  if (!id) {
+    return (
+      <h2 className="text-center text-xl dark:text-gray-200">
+        Produk tidak ditemukan.
+      </h2>
+    );
+  }
 
   const {
     data: product,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["product", productId],
+    queryKey: ["product", id], // ID tetap string
     queryFn: async () => {
-      if (!productId) return null;
       const { data, error } = await supabase
         .from("barang")
         .select("*")
-        .eq("id", productId)
+        .eq("id", id) // Gunakan ID string tanpa parseInt
         .single();
       if (error) throw new Error(error.message);
       return data;
     },
-    enabled: !!productId,
+    enabled: !!id, // Pastikan hanya fetch jika ID ada
   });
 
   if (isLoading)
     return (
       <h2 className="text-center text-xl dark:text-gray-200">Loading...</h2>
     );
+
   if (error || !product)
     return (
       <h2 className="text-center text-xl dark:text-gray-200">
@@ -42,7 +50,7 @@ const DetailProductPages = () => {
 
   return (
     <div className="container mx-auto my-10 p-8 bg-white dark:bg-gray-800">
-      <Link to={"/product"}>
+      <Link to={"/product/:id"}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="50"

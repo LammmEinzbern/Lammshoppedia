@@ -12,7 +12,6 @@ const Header = () => {
 
   useEffect(() => {
     if (cart && cart.length > 0) {
-      // Hitung hanya jumlah produk unik (bukan total semua barang)
       const uniqueProducts = new Set(cart.map((item) => item.id_produk)).size;
       setCartCount(uniqueProducts);
     } else {

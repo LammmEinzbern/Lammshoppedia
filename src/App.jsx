@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePages from "./pages/HomePages";
 import AboutPages from "./pages/AboutPages";
 import ContactPages from "./pages/ContactPages";
-import DetailProductPages from "./pages/DetailProductPages";
 import ProductsPage from "./pages/ProductsPage";
 import Login from "./Auth/LoginPages";
 import CounterApp from "./pages/CounterApp";
@@ -14,13 +13,15 @@ import AuthRoute from "./Auth/AuthRoute";
 import ProtectedAuth from "./Auth/ProtectedAuth";
 import { useCart } from "./utils/store/useCart";
 import Cart from "./components/Home/Cart";
+import ProductDetail from "./pages/ProductDetail";
+import HistoryPayment from "./pages/HistoryPayment";
 
 function App() {
-  const { fetchUser, loading } = useAuth();
+  const { fetchUser, loading, user } = useAuth();
   const { fetchcart } = useCart();
 
   useEffect(() => {
-    fetchcart();
+    // fetchcart();
     fetchUser();
   }, [fetchUser, fetchcart]);
 
@@ -37,11 +38,11 @@ function App() {
         <Route path="/" element={<HomePages />} />
         <Route path="/about" element={<AboutPages />} />
         <Route path="/contact" element={<ContactPages />} />
-        <Route path="/detail/:id" element={<DetailProductPages />} />
+        <Route path="/produk/:id" element={<ProductDetail />} />
         <Route path="/product" element={<ProductsPage />} />
         <Route path="/count" element={<CounterApp />} />
         <Route path="/cart" element={<Cart />} />
-
+        <Route path="/history-payment" element={<HistoryPayment />} />
         <Route element={<AuthRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
