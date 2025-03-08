@@ -161,7 +161,7 @@ export const useCart = create((set, get) => ({
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/payment/checkout",
+        "https://midtrans-jet.vercel.app/api/payment/checkout",
         {
           method: "POST",
           headers: {
